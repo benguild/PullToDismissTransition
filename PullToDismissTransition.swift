@@ -69,10 +69,19 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         }
 
         monitoredScrollView = scrollView
-        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.initial, .new], context: nil)
+        scrollView.addObserver(
+            self,
+            forKeyPath: #keyPath(UIScrollView.contentOffset),
+            options: [.initial, .new],
+            context: nil
+        )
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(
+        forKeyPath keyPath: String?, of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
         guard let monitoredScrollView = monitoredScrollView else { return }
         guard (object as? UIScrollView) === monitoredScrollView else { return }
 
@@ -111,7 +120,10 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
             mostRecentActiveGestureTranslation = translation
 
             if let transitionIsActiveFromTranslationPoint = transitionIsActiveFromTranslationPoint {
-                update(min(1, max(0, (translation.y - transitionIsActiveFromTranslationPoint.y) / max(1, viewForPan.bounds.size.height))))
+                update(min(1, max(
+                    0,
+                    (translation.y - transitionIsActiveFromTranslationPoint.y) / max(1, viewForPan.bounds.size.height)
+                )))
             } else if
                     !recentScrollIsBlockingTransition,
                     velocity.y > PullToDismissTransition.velocityBeginThreshold &&
@@ -153,18 +165,29 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 }
 
 extension PullToDismissTransition: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
         return true
     }
 }
 
 extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return transitionIsActiveFromTranslationPoint != nil ? PullToDismissTransition.transitionDurationDrag : PullToDismissTransition.transitionDurationInstant
+        return (
+            transitionIsActiveFromTranslationPoint != nil
+            ?
+            PullToDismissTransition.transitionDurationDrag
+            :
+            PullToDismissTransition.transitionDurationInstant
+        )
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVc = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else { return }
+        guard let fromVc = transitionContext.viewController(
+            forKey: UITransitionContextViewControllerKey.from
+        ) else { return }
 
         if dimmingView == nil {
             let dimmingView = UIView()
