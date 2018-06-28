@@ -1,5 +1,5 @@
 # PullToDismissTransition
-Using `UIPercentDrivenInteractiveTransition` and `UIViewControllerAnimatedTransitioning` to do nice "pull-to-dismiss" animations on modal view controller(s) with little code. — Also handles `UIScrollView` bounce toggling dynamically where necessary.
+Using **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to do nice "pull-to-dismiss" animations on modal view controller(s) with little code. — Also handles `UIScrollView` bounce toggling dynamically where necessary.
 
 ---
 
@@ -18,7 +18,7 @@ There are 3 bundled transition types:
 
 All transition types are configured to provide minimal interference with the vertical "bouncing" of a `UIScrollView`.
 
-## Implementation instructions
+## Instructions
 
 When presenting your modal view controller, be sure to set the presentation context, or the transitions will not appear over other view controllers below:
 
@@ -32,7 +32,7 @@ viewController.modalPresentationStyle = .overFullScreen
 self.present(viewController)
 ```
 
-The simplest implementation is through adopting the `PuillToDismissable` protocol on your view controller(s):
+The simplest implementation is through adopting the **`PullToDismissable`** protocol on your view controller(s):
 
 ```swift
 import PullToDismissTransition
@@ -95,7 +95,8 @@ To gain additional control, optionally implement the delegate of `PullToDismissT
 ```swift
 extension MyAwesomeViewController: PullToDismissTransitionDelegate {
     func canBeginPullToDismiss(on dismissingViewController: UIViewController) -> Bool {
-        // Return "false" to disable the transition during certain events, such as a horizontal page-swipe.
+        // Return "false" to disable the transition during certain events, such as a horizontal
+        //  page-swipe.
 
         return true
     }
@@ -111,7 +112,8 @@ extension MyAwesomeViewController: PullToDismissTransitionDelegate {
 
         // Called when the attempt is cancelled or completed.
 
-        // Handle events when the transition becomes active, such as reverting adjusted or re-enabling certain GUI.
+        // Handle events when the transition becomes active, such as reverting adjusted or re-enabling
+        //  certain GUI.
     }
 
     func didFinishTransition(for dismissingViewController: UIViewController, didDismiss: Bool) {
@@ -129,14 +131,14 @@ None of these methods are required in your implementation, but are available in 
 **`PullToDismissTransition`** is designed to work with `UIScrollView`, and provide minimal interference with any vertical bouncing. However, when changing between view controllers within the same context (such as when navigating within view controllers in `UINavigationController`), you need to keep the transition up-to-date with whichever scroll view is actively displayed on-screen:
 
 ```swift
-pullToDismissTransition.monitorActiveScrollView(scrollView: scrollView)
+pullToDismissTransition.monitorActiveScrollView(scrollView: myAwesomeScrollView)
 ```
 
 Calling this method will replace any existing observation, and should also be used for other scroll view descendants such as `UITableView`, `UICollectionView`, etc.
 
 ## `UINavigationController` compatibility with `PullToDismissable` protocol
 
-The **`PullToDismissable`** protocol is designed for use on the **child** view-controller(s) of a `UINavigationController`. — Enabling it on a navigation controller itself will currently throw an []`assertionFailure()`](https://developer.apple.com/documentation/swift/1539616-assertionfailure) as a warning when executing in the development environment, but will not affect production code.
+The **`PullToDismissable`** protocol is designed for use on the **child** view-controller(s) of a `UINavigationController`. — Enabling it on a navigation controller itself will currently throw an [`assertionFailure()`](https://developer.apple.com/documentation/swift/1539616-assertionfailure) as a warning when executing in the development environment, but will not affect production code.
 
 ## Alternatively, implementing `PullToDismissTransition` directly
 
