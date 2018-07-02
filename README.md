@@ -46,26 +46,26 @@ class MyAwesomeViewController: UIViewController, PullToDismissable {
         )
 
         ////
-        // NOTE: If you implement any of the delegate methods:
+        // NOTE: Optional, unless you implement any of the delegate methods:
         pullToDismissTransition.delegate = self
 
         return pullToDismissTransition
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupPullToDismiss()
-
-        ////
-        // NOTE: If you navigate to a new scroll-view in a navigation flow (but the same context),
-        //  toggle to the newest one:
-
-        pullToDismissTransition.monitorActiveScrollView(scrollView: scrollView)
-    }
-
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         setupPullToDismiss()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupPullToDismiss()
+
+        ////
+        // NOTE: Optional, unless you've navigated to a scroll-view within a navigation
+        //  flow (but the same context), and therefore must toggle monitoring to it:
+
+        pullToDismissTransition.monitorActiveScrollView(scrollView: scrollView)
     }
 }
 
