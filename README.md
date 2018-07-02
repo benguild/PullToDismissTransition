@@ -1,5 +1,5 @@
 # PullToDismissTransition
-Using **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to do nice "pull-to-dismiss" animations on modal view controller(s) with little code. — Also handles `UIScrollView` bounce toggling dynamically where necessary.
+Uses **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to quickly implement nice "pull-to-dismiss" interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary.
 
 ---
 
