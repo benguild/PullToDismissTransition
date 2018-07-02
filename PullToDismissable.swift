@@ -47,7 +47,7 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
         })
     }
 
-    private func tearDownPullToDismiss(on viewController: UIViewController, allowLongPressGestureRecognizer: Bool) {
+    private func tearDownPullToDismiss(on viewController: UIViewController) {
         if viewController.transitioningDelegate === self {
             viewController.transitioningDelegate = nil
         }
@@ -56,8 +56,6 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
 
         viewController.view.gestureRecognizers?.forEach {
             guard $0.delegate === pullToDismissTransition else { return }
-            guard !($0 is UILongPressGestureRecognizer) || !allowLongPressGestureRecognizer else { return }
-
             viewController.view.removeGestureRecognizer($0)
         }
     }
@@ -65,33 +63,9 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
     private func propagateChanges(to eligibleViewControllers: [UIViewController], isEnabled: Bool) {
         pullToDismissTransition.transitionDelegateObservation?.invalidate()
 
-        var viewForLongPressGestureRecognizer: UIView?
-
-        if isEnabled {
-            // NOTE: `UILongPressGestureRecognizer` breaks access to `UIBarButtonItem(s)` on `UINavigationController`,
-            //  so add it to the next eligible "viewController", instead.
-
-            for viewController in eligibleViewControllers {
-                guard !(viewController is UINavigationController) else { continue }
-
-                viewForLongPressGestureRecognizer = viewController.view
-                break
-            }
-
-            if viewForLongPressGestureRecognizer == nil && eligibleViewControllers.first is UINavigationController {
-                assertionFailure(
-                    "WARNING: `PullToDismissTransition` should be setup on child view controllers of "
-                        + "`UINavigationController`, not on the navigation controller itself."
-                )
-            }
-        }
-
         eligibleViewControllers.reversed().forEach { viewController in
             if !isEnabled || eligibleViewControllers.first !== viewController {
-                tearDownPullToDismiss(
-                    on: viewController,
-                    allowLongPressGestureRecognizer: viewController.view === viewForLongPressGestureRecognizer
-                )
+                tearDownPullToDismiss(on: viewController)
             } else {
                 viewController.transitioningDelegate = self
 
@@ -110,13 +84,9 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
                     }
                 ) ?? false) else { return }
 
-                pullToDismissTransition.additionalGestureRecognizersForTrigger().forEach {
-                    let targetView = (
-                        $0 is UILongPressGestureRecognizer ? viewForLongPressGestureRecognizer : viewController.view
-                    )
-
-                    targetView?.addGestureRecognizer($0)
-                }
+                viewController.view.addGestureRecognizer(
+                    pullToDismissTransition.additionalGestureRecognizerForTrigger()
+                )
             }
         }
     }

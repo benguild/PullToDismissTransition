@@ -44,6 +44,8 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         static let scalingViewCornerRadiusToggleDuration: TimeInterval = 0.15
         static let scalingPeakScaleDivider: CGFloat = 5
 
+        static let touchStillWithoutPanEndDelay: TimeInterval = 0.15
+
         static let transitionDurationDragSlide: TimeInterval = 0.87
         static let transitionDurationDragScale: TimeInterval = 0.35
         static let transitionReEnableTimeoutAfterScroll: TimeInterval = 0.72
@@ -65,13 +67,14 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     private var transitionIsActiveFromTranslationPoint: CGPoint?
 
     private var didRequestScrollViewBounceDisable = false
-    private var longPressGestureIsActive = false
     private var monitoredScrollViewDoesBounce = false
     private var recentScrollIsBlockingTransition = false
     private var scrollInitiateCount: Int = 0
     private var scrollViewObservation: NSKeyValueObservation?
+    private var touchBeginOrPanIncrement: Int = 0
     private var transitionHasEndedAndPanIsInactive = false
 
+    private var currentTouchIsStillAndActive = false
     private var mostRecentActiveGestureTranslation: CGPoint?
 
     var transitionDelegateObservation: NSKeyValueObservation?
@@ -87,15 +90,11 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         super.init()
     }
 
-    func additionalGestureRecognizersForTrigger() -> [UIGestureRecognizer] {
+    func additionalGestureRecognizerForTrigger() -> UIGestureRecognizer {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan))
         panGestureRecognizer.delegate = self
 
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didPress))
-        longPressGestureRecognizer.delegate = self
-        longPressGestureRecognizer.minimumPressDuration = 0
-
-        return [panGestureRecognizer, longPressGestureRecognizer]
+        return panGestureRecognizer
     }
 
     private func updateBounceLockoutState() {
@@ -112,7 +111,7 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         }
 
         let shouldScrollViewBounceBeDisabled =
-            (longPressGestureIsActive && mostRecentActiveGestureTranslation == nil) ||
+            currentTouchIsStillAndActive ||
             ((mostRecentActiveGestureTranslation?.y ?? 0) > 0) ||
             (doesTranslateY && transitionHasEndedAndPanIsInactive && monitoredScrollView.contentOffset.y <= 0)
 
@@ -198,6 +197,9 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         let translation = panGestureRecognizer.translation(in: view)
         let velocity = panGestureRecognizer.velocity(in: view)
 
+        currentTouchIsStillAndActive = false
+        touchBeginOrPanIncrement += 1
+
         switch panGestureRecognizer.state {
         case .began, .changed:
             mostRecentActiveGestureTranslation = translation
@@ -255,39 +257,32 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         updateBounceLockoutState()
     }
 
-    private func handlePress(from longPressGestureRecognizer: UILongPressGestureRecognizer, on view: UIView) {
-        guard monitoredScrollViewDoesBounce else { return }
-
-        switch longPressGestureRecognizer.state {
-        case .began:
-            longPressGestureIsActive = true
-
-        case .cancelled, .ended:
-            longPressGestureIsActive = false
-
-        default:
-            break
-        }
-
-        updateBounceLockoutState()
-    }
-
     @objc private func didPan(sender: Any?) {
         guard let panGestureRecognizer = sender as? UIPanGestureRecognizer else { return }
         guard let view = panGestureRecognizer.view else { return }
 
         handlePan(from: panGestureRecognizer, on: view)
     }
-
-    @objc private func didPress(sender: Any?) {
-        guard let longPressGestureRecognizer = sender as? UILongPressGestureRecognizer else { return }
-        guard let view = longPressGestureRecognizer.view else { return }
-
-        handlePress(from: longPressGestureRecognizer, on: view)
-    }
 }
 
 extension PullToDismissTransition: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        touchBeginOrPanIncrement += 1
+        currentTouchIsStillAndActive = true
+
+        let localCopyOfTouchBeginOrPanIncrement = touchBeginOrPanIncrement
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Metric.touchStillWithoutPanEndDelay) {
+            guard self.touchBeginOrPanIncrement == localCopyOfTouchBeginOrPanIncrement else { return }
+
+            self.currentTouchIsStillAndActive = false
+            self.updateBounceLockoutState()
+        }
+
+        updateBounceLockoutState()
+        return true
+    }
+
     func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
