@@ -138,7 +138,7 @@ Calling this method will replace any existing observation, and should also be us
 
 ## `UINavigationController` compatibility with `PullToDismissable` protocol
 
-The **`PullToDismissable`** protocol is designed for use on the **child** view-controller(s) of a `UINavigationController`. — Enabling it on a navigation controller itself will currently throw an [`assertionFailure()`](https://developer.apple.com/documentation/swift/1539616-assertionfailure) as a warning when executing in the development environment, but will not affect production code.
+The **`PullToDismissable`** protocol is designed for use on the **child** view-controller(s) of a `UINavigationController`, as views within the navigation flow may have scrolling/bouncing behaviors that require monitoring via the transition's `monitorActiveScrollView(scrollView: UIScrollView)` method.
 
 ## Alternatively, implementing `PullToDismissTransition` directly
 
