@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D0098D52136B83100BF353D /* ScrollViewExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0098D42136B83100BF353D /* ScrollViewExampleViewController.swift */; };
 		3DC135DB21358EFF00FB6C3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC135DA21358EFF00FB6C3F /* AppDelegate.swift */; };
 		3DCBE7872135992600048446 /* ProtocolExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCBE7862135992600048446 /* ProtocolExampleViewController.swift */; };
 		3DCBE78A2135995000048446 /* NonProtocolExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCBE7892135995000048446 /* NonProtocolExampleViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D0098D42136B83100BF353D /* ScrollViewExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewExampleViewController.swift; sourceTree = "<group>"; };
 		3DC135D721358EFF00FB6C3F /* PullToDismissTransition-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PullToDismissTransition-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DC135DA21358EFF00FB6C3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DC135E621358F0100FB6C3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				3DC135DA21358EFF00FB6C3F /* AppDelegate.swift */,
 				3DCBE7892135995000048446 /* NonProtocolExampleViewController.swift */,
 				3DCBE7862135992600048446 /* ProtocolExampleViewController.swift */,
+				3D0098D42136B83100BF353D /* ScrollViewExampleViewController.swift */,
 				3DC135F5213592E400FB6C3F /* LaunchScreen.storyboard */,
 				3DC135E621358F0100FB6C3F /* Info.plist */,
 			);
@@ -151,6 +154,7 @@
 				3DCBE78F2135A09B00048446 /* PullToDismissTransition.swift in Sources */,
 				3DCBE78E2135A09B00048446 /* PullToDismissable.swift in Sources */,
 				3DCBE78A2135995000048446 /* NonProtocolExampleViewController.swift in Sources */,
+				3D0098D52136B83100BF353D /* ScrollViewExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

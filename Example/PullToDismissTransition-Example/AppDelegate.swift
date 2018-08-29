@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let viewController = UIViewController()
-        viewController.view.backgroundColor = .lightGray
+        viewController.view.backgroundColor = .white
 
         let stackView = UIStackView(frame: viewController.view.frame)
         stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -23,23 +23,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let nonProtocolExampleButton = UIButton()
         nonProtocolExampleButton.addTarget(self, action: #selector(nonProtocolExampleTapped), for: .touchUpInside)
         nonProtocolExampleButton.setTitle("Non-protocol example… ☆", for: .normal)
-        nonProtocolExampleButton.setTitleColor(.black, for: .normal)
+        nonProtocolExampleButton.setTitleColor(viewController.view.tintColor, for: .normal)
         nonProtocolExampleButton.setTitleColor(.gray, for: .highlighted)
 
         let protocolExampleButton = UIButton()
         protocolExampleButton.addTarget(self, action: #selector(pullToDismissableExampleTapped), for: .touchUpInside)
-        protocolExampleButton.setTitle("\"PullToDismissable\" protocol… ★", for: .normal)
-        protocolExampleButton.setTitleColor(.black, for: .normal)
+        protocolExampleButton.setTitle("`PullToDismissable` protocol… ★", for: .normal)
+        protocolExampleButton.setTitleColor(viewController.view.tintColor, for: .normal)
         protocolExampleButton.setTitleColor(.gray, for: .highlighted)
+
+        let scrollViewExampleButton = UIButton()
+        scrollViewExampleButton.addTarget(self, action: #selector(scrollViewExampleTapped), for: .touchUpInside)
+        scrollViewExampleButton.setTitle("`UIScrollView` example… ☆", for: .normal)
+        scrollViewExampleButton.setTitleColor(viewController.view.tintColor, for: .normal)
+        scrollViewExampleButton.setTitleColor(.gray, for: .highlighted)
 
         stackView.addArrangedSubview(protocolExampleButton)
         stackView.addArrangedSubview(nonProtocolExampleButton)
+        stackView.addArrangedSubview(scrollViewExampleButton)
 
         viewController.view.addSubview(stackView)
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = viewController
-        window?.tintColor = .black
 
         window?.makeKeyAndVisible()
         return true
@@ -58,6 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @objc private func pullToDismissableExampleTapped(_ sender: AnyObject) {
         var viewController = ProtocolExampleViewController()
+        viewController.isPullToDismissEnabled = true
+
+        presentExample(viewController: viewController)
+    }
+
+    @objc private func scrollViewExampleTapped(_ sender: AnyObject) {
+        var viewController = ScrollViewExampleViewController()
         viewController.isPullToDismissEnabled = true
 
         presentExample(viewController: viewController)
