@@ -15,9 +15,9 @@ All transition types are configured to provide minimal interference with the ver
 
 ## Demo
 
-Example of the “slide” transition reversing against `UIScrollView` in a single, fluid gesture:
+Example of the “slide” transition reversing against a **`UIScrollView`** in a single, fluid gesture:
 
-![Example of the “slide” transition reversing against `UIScrollView` in a single, fluid gesture](https://raw.github.com/benguild/PullToDismissTransition/master/demo.gif "Example of the “slide” transition reversing against `UIScrollView` in a single, fluid gesture")
+![Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture](https://raw.github.com/benguild/PullToDismissTransition/master/demo.gif "Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture")
 
 ## Instructions
 
