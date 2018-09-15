@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name             = "PullToDismissTransition"
   s.version          = "0.7.0"
   s.homepage         = "https://github.com/benguild/PullToDismissTransition"
-  s.summary          = "(Beta) Uses `UIPercentDrivenInteractiveTransition` and `UIViewControllerAnimatedTransitioning` to quickly implement nice "pull-to-dismiss" interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary."
+  s.summary          = "(Beta) Uses `UIPercentDrivenInteractiveTransition` and `UIViewControllerAnimatedTransitioning` to quickly implement nice “pull-to-dismiss” interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary. "
   s.license          = 'MIT'
   s.author           = { "Ben Guild" => "hello@benguild.com" }
   s.source           = { :git => "https://github.com/benguild/PullToDismissTransition.git", :tag => s.version.to_s }
