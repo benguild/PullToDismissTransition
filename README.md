@@ -4,6 +4,10 @@
 
 Uses **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to quickly implement nice "pull-to-dismiss" interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary.
 
+[![Version](https://img.shields.io/cocoapods/v/PullToDismissTransition.svg?style=flat)](http://cocoapods.org/pods/PullToDismissTransition)
+[![License](https://img.shields.io/cocoapods/l/PullToDismissTransition.svg?style=flat)](http://cocoapods.org/pods/PullToDismissTransition)
+[![Platform](https://img.shields.io/cocoapods/p/PullToDismissTransition.svg?style=flat)](http://cocoapods.org/pods/PullToDismissTransition)
+
 ## Bundled transition types
 
 There are 3 bundled transition types:
@@ -18,6 +22,15 @@ All transition types are configured to provide minimal interference with the ver
 Example of the “slide” transition reversing against a **`UIScrollView`** in a single, fluid gesture:
 
 ![Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture](https://raw.github.com/benguild/PullToDismissTransition/master/demo.gif "Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture")
+
+## Installation
+
+`PullToDismissTransition` is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod "PullToDismissTransition"
+```
 
 ## Instructions
 
@@ -144,3 +157,11 @@ The **`PullToDismissable`** protocol is designed for use on the **child** view-c
 ## Alternatively, implementing `PullToDismissTransition` directly
 
 While the `PullToDismissable` protocol is provided for your convenience and to reduce code complexity in re-use, it is also fine to implement `PullToDismissTransition` yourself directly by referencing this protocol's code for the transition's integration.
+
+## Author
+
+Ben Guild, hello@benguild.com
+
+## License
+
+`PullToDismissTransition` is available under the MIT license. See the LICENSE file for more info.
