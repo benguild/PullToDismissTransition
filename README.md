@@ -4,14 +4,6 @@
 
 Uses **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to quickly implement nice "pull-to-dismiss" interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary.
 
----
-
-## To-Do ...
-- [ ] Create example for a `UIViewController` with scrollable content, and without.
-- [ ] Add screenshots and/or GIF or video.
-
----
-
 ## Bundled transition types
 
 There are 3 bundled transition types:
@@ -20,6 +12,12 @@ There are 3 bundled transition types:
 - **`scale`** = Scales down the view before eventually fading it out and fading in the view underneath.
 
 All transition types are configured to provide minimal interference with the vertical "bouncing" of a `UIScrollView`.
+
+## Demo
+
+Example of the “slide” transition reversing against a **`UIScrollView`** in a single, fluid gesture:
+
+![Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture](https://raw.github.com/benguild/PullToDismissTransition/master/demo.gif "Example of the “slide” transition reversing against a `UIScrollView` in a single, fluid gesture")
 
 ## Instructions
 
