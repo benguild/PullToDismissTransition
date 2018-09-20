@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PullToDismissTransitionDelegate: class {
+public protocol PullToDismissTransitionDelegate: class {
     func canBeginPullToDismiss(on dismissingViewController: UIViewController) -> Bool
 
     func didBeginPullToDismissAttempt(on dismissingViewController: UIViewController)
@@ -17,22 +17,22 @@ protocol PullToDismissTransitionDelegate: class {
 }
 
 extension PullToDismissTransitionDelegate {
-    func canBeginPullToDismiss(on dismissingViewController: UIViewController) -> Bool {
+    public func canBeginPullToDismiss(on dismissingViewController: UIViewController) -> Bool {
         return true
     }
 
-    func didBeginPullToDismissAttempt(on dismissingViewController: UIViewController) {}
-    func didCompletePullToDismissAttempt(on dismissingViewController: UIViewController, willDismiss: Bool) {}
-    func didFinishTransition(for dismissingViewController: UIViewController, didDismiss: Bool) {}
+    public func didBeginPullToDismissAttempt(on dismissingViewController: UIViewController) {}
+    public func didCompletePullToDismissAttempt(on dismissingViewController: UIViewController, willDismiss: Bool) {}
+    public func didFinishTransition(for dismissingViewController: UIViewController, didDismiss: Bool) {}
 }
 
-enum PullToDismissTransitionType {
+public enum PullToDismissTransitionType {
     case slideStatic
     case slideDynamic
     case scale
 }
 
-class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
+public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     private struct Metric {
         static let dimmingAlphaTransitionFinishDropDelay: TimeInterval = 0.24
         static let dimmingPeakAlpha: CGFloat = 0.87
@@ -54,13 +54,13 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         static let velocityFinishThreshold: CGFloat = 1280
     }
 
-    let transitionType: PullToDismissTransitionType
+    public let transitionType: PullToDismissTransitionType
     private(set) weak var viewController: UIViewController?
 
     private(set) weak var monitoredScrollView: UIScrollView?
-    var permitWhenNotAtRootViewController = false
+    public var permitWhenNotAtRootViewController = false
 
-    weak var delegate: PullToDismissTransitionDelegate?
+    public weak var delegate: PullToDismissTransitionDelegate?
 
     private weak var dimmingView: UIView?
     private weak var scalingView: UIView?
@@ -77,20 +77,20 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     private var currentTouchIsStillAndActive = false
     private var mostRecentActiveGestureTranslation: CGPoint?
 
-    var transitionDelegateObservation: NSKeyValueObservation?
+    public var transitionDelegateObservation: NSKeyValueObservation?
 
     deinit {
         scrollViewObservation?.invalidate()
     }
 
-    init(viewController: UIViewController, transitionType: PullToDismissTransitionType = .slideStatic) {
+    public init(viewController: UIViewController, transitionType: PullToDismissTransitionType = .slideStatic) {
         self.transitionType = transitionType
         self.viewController = viewController
 
         super.init()
     }
 
-    func additionalGestureRecognizerForTrigger() -> UIGestureRecognizer {
+    public func additionalGestureRecognizerForTrigger() -> UIGestureRecognizer {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan))
         panGestureRecognizer.delegate = self
 
@@ -122,7 +122,7 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         monitoredScrollView.bounces = !shouldScrollViewBounceBeDisabled
     }
 
-    func monitorActiveScrollView(scrollView: UIScrollView) {
+    public func monitorActiveScrollView(scrollView: UIScrollView) {
         if let monitoredScrollView = monitoredScrollView, monitoredScrollViewDoesBounce {
             monitoredScrollView.bounces = true
         }
@@ -266,7 +266,7 @@ class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 }
 
 extension PullToDismissTransition: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         touchBeginOrPanIncrement += 1
         currentTouchIsStillAndActive = true
 
@@ -283,7 +283,7 @@ extension PullToDismissTransition: UIGestureRecognizerDelegate {
         return true
     }
 
-    func gestureRecognizer(
+    public func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
@@ -292,7 +292,7 @@ extension PullToDismissTransition: UIGestureRecognizerDelegate {
 }
 
 extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         switch transitionType {
         case .slideStatic, .slideDynamic:
             return Metric.transitionDurationDragSlide
@@ -416,7 +416,7 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
         completeBlock(true)
     }
 
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromVc = transitionContext.viewController(
             forKey: UITransitionContextViewControllerKey.from
         ) else { return }

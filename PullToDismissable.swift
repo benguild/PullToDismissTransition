@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PullToDismissable where Self: UIViewController {
+public protocol PullToDismissable where Self: UIViewController {
     var eligibleViewControllersForPullToDismiss: [UIViewController] { get }
     var isPullToDismissEnabled: Bool { get set }
 
@@ -19,7 +19,7 @@ protocol PullToDismissable where Self: UIViewController {
 }
 
 extension PullToDismissable where Self: UIViewController, Self: UIViewControllerTransitioningDelegate {
-    var eligibleViewControllersForPullToDismiss: [UIViewController] {
+    public var eligibleViewControllersForPullToDismiss: [UIViewController] {
         var viewControllers = [UIViewController]()
 
         if let navigationController = navigationController {
@@ -31,7 +31,7 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
         return viewControllers
     }
 
-    var isPullToDismissEnabled: Bool {
+    public var isPullToDismissEnabled: Bool {
         get {
             return isPullToDismissEnabled(on: eligibleViewControllersForPullToDismiss)
         }
@@ -91,7 +91,7 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
         }
     }
 
-    func setupPullToDismiss() {
+    public func setupPullToDismiss() {
         let eligibleViewControllers = eligibleViewControllersForPullToDismiss
 
         propagateChanges(
@@ -100,7 +100,7 @@ extension PullToDismissable where Self: UIViewController, Self: UIViewController
         )
     }
 
-    func setPullToDismissEnabled(_ isEnabled: Bool) {
+    public func setPullToDismissEnabled(_ isEnabled: Bool) {
         propagateChanges(to: eligibleViewControllersForPullToDismiss, isEnabled: isEnabled)
     }
 }
