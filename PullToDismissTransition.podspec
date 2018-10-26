@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "PullToDismissTransition"
-  s.version          = "0.7.2"
+  s.version          = "0.7.3"
   s.homepage         = "https://github.com/benguild/PullToDismissTransition"
   s.summary          = "(Beta) Uses `UIPercentDrivenInteractiveTransition` and `UIViewControllerAnimatedTransitioning` to quickly implement nice “pull-to-dismiss” interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary. "
   s.license          = 'MIT'

@@ -229,10 +229,13 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
                 }
 
                 viewController.dismiss(animated: true) { [weak self] in
-                    self?.delegate?.didFinishTransition(
-                        for: viewController,
-                        didDismiss: (viewController.presentingViewController == nil)
-                    )
+                    let didDismiss = (viewController.presentingViewController == nil)
+
+                    if didDismiss {
+                        self?.transitionDelegateObservation?.invalidate()
+                    }
+
+                    self?.delegate?.didFinishTransition(for: viewController, didDismiss: didDismiss)
                 }
 
                 delegate?.didBeginPullToDismissAttempt(on: viewController)
