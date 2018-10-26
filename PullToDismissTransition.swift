@@ -81,6 +81,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 
     deinit {
         scrollViewObservation?.invalidate()
+        transitionDelegateObservation?.invalidate()
     }
 
     public init(viewController: UIViewController, transitionType: PullToDismissTransitionType = .slideStatic) {
