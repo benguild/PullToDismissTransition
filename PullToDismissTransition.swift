@@ -33,7 +33,7 @@ public enum PullToDismissTransitionType {
 }
 
 public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
-    private struct Metric {
+    private struct Const {
         static let dimmingAlphaTransitionFinishDropDelay: TimeInterval = 0.24
         static let dimmingPeakAlpha: CGFloat = 0.87
 
@@ -150,7 +150,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
             let localCopyOfScrollInitiateCount = self?.scrollInitiateCount
 
             DispatchQueue.main.asyncAfter(
-                deadline: DispatchTime.now() + Metric.transitionReEnableTimeoutAfterScroll
+                deadline: DispatchTime.now() + Const.transitionReEnableTimeoutAfterScroll
             ) {
                 guard self?.monitoredScrollView === scrollView else { return }
                 guard self?.scrollInitiateCount == localCopyOfScrollInitiateCount else { return }
@@ -172,7 +172,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         on viewController: UIViewController
     ) -> Bool {
         return !recentScrollIsBlockingTransition &&
-            velocity.y > Metric.velocityBeginThreshold &&
+            velocity.y > Const.velocityBeginThreshold &&
             velocity.y > fabs(velocity.x) &&
             (permitWhenNotAtRootViewController || isAtRootViewController()) &&
             (monitoredScrollView?.contentOffset.y ?? 0) <= 0 &&
@@ -248,10 +248,10 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
             mostRecentActiveGestureTranslation = nil
 
             stopPullToDismiss(on: viewController, finished: panGestureRecognizer.state != .cancelled && (
-                (percentComplete >= Metric.translationThreshold && velocity.y >= 0) ||
+                (percentComplete >= Const.translationThreshold && velocity.y >= 0) ||
                     (
-                        velocity.y >= Metric.velocityFinishThreshold &&
-                            translation.y >= Metric.minimumTranslationYForDismiss
+                        velocity.y >= Const.velocityFinishThreshold &&
+                            translation.y >= Const.minimumTranslationYForDismiss
                     )
             ))
         default:
@@ -276,7 +276,7 @@ extension PullToDismissTransition: UIGestureRecognizerDelegate {
 
         let localCopyOfTouchBeginOrPanIncrement = touchBeginOrPanIncrement
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Metric.touchStillWithoutPanEndDelay) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Const.touchStillWithoutPanEndDelay) {
             guard self.touchBeginOrPanIncrement == localCopyOfTouchBeginOrPanIncrement else { return }
 
             self.currentTouchIsStillAndActive = false
@@ -299,9 +299,9 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         switch transitionType {
         case .slideStatic, .slideDynamic:
-            return Metric.transitionDurationDragSlide
+            return Const.transitionDurationDragSlide
         case .scale:
-            return Metric.transitionDurationDragScale
+            return Const.transitionDurationDragScale
         }
     }
 
@@ -311,7 +311,7 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
     ) {
         if dimmingView == nil {
             let dimmingView = UIView()
-            dimmingView.alpha = Metric.dimmingPeakAlpha
+            dimmingView.alpha = Const.dimmingPeakAlpha
             dimmingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             dimmingView.frame = transitionContext.containerView.bounds
 
@@ -357,8 +357,8 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
             if shouldRoundCorners {
                 scalingView.layer.masksToBounds = true
 
-                UIViewPropertyAnimator(duration: Metric.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
-                    scalingView.layer.cornerRadius = Metric.scalingViewCornerRadius
+                UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
+                    scalingView.layer.cornerRadius = Const.scalingViewCornerRadius
                 }.startAnimation()
             }
         }
@@ -374,7 +374,7 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
                 viewController.view.layer.cornerRadius = scalingView.layer.cornerRadius
                 viewController.view.layer.masksToBounds = true
 
-                UIViewPropertyAnimator(duration: Metric.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
+                UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
                     viewController.view.layer.cornerRadius = 0
                 }.startAnimation()
             }
@@ -406,7 +406,7 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
 
             if holdDimmingView {
                 UIView.animate(
-                    withDuration: Metric.dimmingAlphaTransitionFinishDropDelay,
+                    withDuration: Const.dimmingAlphaTransitionFinishDropDelay,
                     animations: { [weak self] in
                         self?.dimmingView?.alpha = transitionContext.transitionWasCancelled ? 1 : 0
                     },
@@ -454,8 +454,8 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
                     guard let scalingView = strongSelf.scalingView else { break }
                     scalingView.alpha = 0
                     scalingView.frame = scalingView.frame.insetBy(
-                        dx: scalingView.frame.width / Metric.scalingPeakScaleDivider,
-                        dy: scalingView.frame.height / Metric.scalingPeakScaleDivider
+                        dx: scalingView.frame.width / Const.scalingPeakScaleDivider,
+                        dy: scalingView.frame.height / Const.scalingPeakScaleDivider
                     )
                 }
             },
