@@ -62,6 +62,8 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 
     public weak var delegate: PullToDismissTransitionDelegate?
 
+    public var isDimmingEnabled = true
+
     private weak var dimmingView: UIView?
     private weak var scalingView: UIView?
     private var transitionIsActiveFromTranslationPoint: CGPoint?
@@ -309,13 +311,13 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
         using transitionContext: UIViewControllerContextTransitioning,
         in viewController: UIViewController
     ) {
-        if dimmingView == nil {
+        if isDimmingEnabled && dimmingView == nil {
             let dimmingView = UIView()
             dimmingView.alpha = Const.dimmingPeakAlpha
             dimmingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             dimmingView.frame = transitionContext.containerView.bounds
 
-            let color: UIColor?
+            let color: UIColor
 
             switch transitionType {
             case .slideStatic, .slideDynamic:
