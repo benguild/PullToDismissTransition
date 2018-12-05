@@ -43,7 +43,7 @@ viewController.isPullToDismissEnabled = true
 viewController.modalPresentationCapturesStatusBarAppearance = true
 viewController.modalPresentationStyle = .overFullScreen
 
-self.present(viewController)
+self.present(viewController, animated: true)
 ```
 
 The simplest implementation is through adopting the **`PullToDismissable`** protocol on your view controller(s):
@@ -53,7 +53,7 @@ import PullToDismissTransition
 import UIKit
 
 class MyAwesomeViewController: UIViewController, PullToDismissable {
-    private lazy var pullToDismissTransition: PullToDismissTransition = {
+    private(set) lazy var pullToDismissTransition: PullToDismissTransition = {
         let pullToDismissTransition = PullToDismissTransition(
             viewController: self,
             transitionType: .slideStatic
