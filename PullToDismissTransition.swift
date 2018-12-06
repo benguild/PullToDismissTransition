@@ -225,8 +225,8 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 
                 if let monitoredScrollView = monitoredScrollView, monitoredScrollView.isScrollEnabled {
                     monitoredScrollView.contentOffset = CGPoint(
-                        x: monitoredScrollView.contentOffset.x,
-                        y: 0
+                        x: monitoredScrollView.contentOffset.x - monitoredScrollView.contentInset.left,
+                        y: -monitoredScrollView.contentInset.top
                     )
                 }
 
