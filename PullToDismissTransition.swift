@@ -32,7 +32,7 @@ public enum PullToDismissTransitionType {
     case scale
 }
 
-open class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
+public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     private struct Const {
         static let dimmingAlphaTransitionFinishDropDelay: TimeInterval = 0.24
         static let dimmingPeakAlpha: CGFloat = 0.87
