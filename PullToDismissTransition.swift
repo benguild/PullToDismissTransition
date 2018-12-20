@@ -79,6 +79,8 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     private var currentTouchIsStillAndActive = false
     private var mostRecentActiveGestureTranslation: CGPoint?
 
+    @objc dynamic public private(set) var transitionProgress: CGFloat = 0
+
     public var transitionDelegateObservation: NSKeyValueObservation?
 
     deinit {
@@ -219,6 +221,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
                     break
                 }
 
+                transitionProgress = progress
                 update(progress)
             } else if canBeginPullToDismiss(velocity: velocity, on: viewController) {
                 transitionIsActiveFromTranslationPoint = translation
