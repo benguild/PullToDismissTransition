@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.source_files     = 'PullToDismissTransition.swift', 'PullToDismissable.swift'
   s.social_media_url = 'https://twitter.com/benguild'
 
-  s.platform     = :ios, '10.0'
+  s.platform     = :ios, '9.0'
   s.requires_arc = true
-  s.swift_version = '4.1'
+  s.swift_version = '4.2'
 
 end

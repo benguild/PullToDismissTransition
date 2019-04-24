@@ -177,7 +177,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     ) -> Bool {
         return !recentScrollIsBlockingTransition &&
             velocity.y > Const.velocityBeginThreshold &&
-            velocity.y > fabs(velocity.x) &&
+            velocity.y > abs(velocity.x) &&
             (permitWhenNotAtRootViewController || isAtRootViewController()) &&
             (monitoredScrollView?.contentOffset.y ?? 0) <= 0 &&
             (delegate?.canBeginPullToDismiss(on: viewController) ?? true)
@@ -359,12 +359,14 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
                 shouldRoundCorners = true
             }
 
-            if shouldRoundCorners {
-                scalingView.layer.masksToBounds = true
+            if #available(iOS 10.0, *) {
+                if shouldRoundCorners {
+                    scalingView.layer.masksToBounds = true
 
-                UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
-                    scalingView.layer.cornerRadius = Const.scalingViewCornerRadius
-                }.startAnimation()
+                    UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
+                        scalingView.layer.cornerRadius = Const.scalingViewCornerRadius
+                        }.startAnimation()
+                }
             }
         }
     }
@@ -375,13 +377,16 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
         completionHandler: (() -> Void)? = nil
     ) {
         if transitionContext.transitionWasCancelled, let scalingView = scalingView {
-            if scalingView.layer.cornerRadius > 0 {
-                viewController.view.layer.cornerRadius = scalingView.layer.cornerRadius
-                viewController.view.layer.masksToBounds = true
+            
+            if #available(iOS 10.0, *) {
+                if scalingView.layer.cornerRadius > 0 {
+                    viewController.view.layer.cornerRadius = scalingView.layer.cornerRadius
+                    viewController.view.layer.masksToBounds = true
 
-                UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
-                    viewController.view.layer.cornerRadius = 0
-                }.startAnimation()
+                    UIViewPropertyAnimator(duration: Const.scalingViewCornerRadiusToggleDuration, curve: .easeIn) {
+                        viewController.view.layer.cornerRadius = 0
+                        }.startAnimation()
+                }
             }
 
             viewController.view.isHidden = false
