@@ -55,6 +55,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
     }
 
     public let transitionType: PullToDismissTransitionType
+    public let animationOptions: UIView.AnimationOptions
     private(set) weak var viewController: UIViewController?
 
     private(set) weak var monitoredScrollView: UIScrollView?
@@ -88,9 +89,10 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
         transitionDelegateObservation?.invalidate()
     }
 
-    public init(viewController: UIViewController, transitionType: PullToDismissTransitionType = .slideStatic) {
+    public init(viewController: UIViewController, transitionType: PullToDismissTransitionType = .slideStatic, animationOptions: UIView.AnimationOptions = [.curveLinear]) {
         self.transitionType = transitionType
         self.viewController = viewController
+        self.animationOptions = animationOptions
 
         super.init()
     }
@@ -440,7 +442,7 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
         UIView.animate(
             withDuration: transitionDuration(using: transitionContext),
             delay: 0,
-            options: .curveEaseOut,
+            options: animationOptions,
             animations: { [weak self] in
                 guard let strongSelf = self else { return }
 
