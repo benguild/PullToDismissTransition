@@ -1,6 +1,6 @@
 # PullToDismissTransition
 
-**NOTE:** This is beta! Pull-requests are welcome.
+**NOTE:** ~This is beta! Pull-requests are welcome.~ I've archived this library's repository because I no longer have access to the code of the project with which I could fully test/validate its functionality. Feel free to fork this and use it as a baseline for your own varients! But, please credit this original repo as a point of reference.
 
 Uses **`UIPercentDrivenInteractiveTransition`** and **`UIViewControllerAnimatedTransitioning`** to quickly implement nice “pull-to-dismiss” interactions on modal view controller(s). — Also handles `UIScrollView` bounce toggling dynamically when necessary. 
 
